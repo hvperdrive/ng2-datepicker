@@ -42,17 +42,15 @@ export class AppModule {}
 
 ```ts
 import { DatepickerOptions } from 'ng2-datepicker';
+import * as fr from 'date-fns/locale/fr';
 
 options: DatepickerOptions = {
-  minYear: 1970,
-  maxYear: 2030,
-  displayFormat: 'MMM D[,] YYYY',
-  barTitleFormat: 'MMMM YYYY',
-  firstCalendarDay: 0; // 0 - Sunday, 1 - Monday
+  locale: fr, // default locale = en
 };
 ```
 
 For available `format` options check out [here](https://date-fns.org/docs/format).
+For available `locale` options check out [here](https://date-fns.org/v1.28.5/docs/I18n)
 
 ## Run Included Demo
 

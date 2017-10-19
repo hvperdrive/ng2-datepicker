@@ -20,10 +20,10 @@ import {
   setDay
 } from 'date-fns';
 import { ISlimScrollOptions } from 'ngx-slimscroll';
+import * as defaultLocale from 'date-fns/locale/en';
 
 export interface DatepickerOptions {
-  displayFormat?: string; // default: 'MMM D[,] YYYY'
-  barTitleFormat?: string; // default: 'MMMM YYYY'
+  locale?: any; // default: english 'date-fns/locale/en'
 }
 
 @Component({
@@ -59,6 +59,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     isToday: boolean;
     isSelected: boolean;
   }[];
+  locale: any;
 
   private onTouchedCallback: () => void = () => { };
   private onChangeCallback: (_: any) => void = () => { };
@@ -104,9 +105,11 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   setOptions(): void {
     this.minYear = getYear(this.date);
     this.maxYear = getYear(this.date) + 5;
-    this.displayFormat = this.options && this.options.displayFormat || 'MMM D[,] YYYY';
-    this.barTitleFormat = this.options && this.options.barTitleFormat || 'MMMM YYYY';
+    this.displayFormat = 'MMM D[,] YYYY';
+    this.barTitleFormat = 'MMMM YYYY';
     this.firstCalendarDay = 1; // 1 = Monday
+
+    this.locale = this.options && this.options.locale || defaultLocale;
   }
 
   nextMonth(): void {
@@ -161,8 +164,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       });
     }
 
-    this.displayValue = format(this.innerValue, this.displayFormat);
-    this.barTitle = format(start, this.barTitleFormat);
+    this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
+    this.barTitle = format(start, this.barTitleFormat, { locale: this.locale });
   }
 
   initYears(): void {
@@ -177,7 +180,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     const start = this.firstCalendarDay;
     for (let i = start; i <= 6 + start; i++) {
       const date = setDay(new Date(), i);
-      this.dayNames.push(format(date, 'ddd'));
+      this.dayNames.push(format(date, 'ddd', { locale: this.locale }));
     }
   }
 
@@ -194,8 +197,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       this.date = val;
       this.innerValue = val;
       this.init();
-      this.displayValue = format(this.innerValue, this.displayFormat);
-      this.barTitle = format(startOfMonth(val), this.barTitleFormat);
+      this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
+      this.barTitle = format(startOfMonth(val), this.barTitleFormat, { locale: this.locale });
     }
   }
 
