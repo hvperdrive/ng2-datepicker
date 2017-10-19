@@ -180,7 +180,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     const start = this.firstCalendarDay;
     for (let i = start; i <= 6 + start; i++) {
       const date = setDay(new Date(), i);
-      this.dayNames.push(format(date, 'ddd', { locale: this.locale }));
+      this.dayNames.push(format(date, 'dd', { locale: this.locale }).toUpperCase().charAt(0));
     }
   }
 
