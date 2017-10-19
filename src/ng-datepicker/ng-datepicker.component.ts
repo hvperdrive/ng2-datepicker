@@ -47,7 +47,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   minYear: number;
   maxYear: number;
   firstCalendarDay: number;
-  years: { year: number; isThisYear: boolean }[];
   dayNames: string[];
   scrollOptions: ISlimScrollOptions;
   days: {
@@ -90,7 +89,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.date = new Date();
     this.setOptions();
     this.initDayNames();
-    this.initYears();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -98,7 +96,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       this.setOptions();
       this.initDayNames();
       this.init();
-      this.initYears();
     }
   }
 
@@ -127,12 +124,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.value = this.date;
     this.init();
     this.close();
-  }
-
-  setYear(i: number): void {
-    this.date = setYear(this.date, this.years[i].year);
-    this.init();
-    this.initYears();
   }
 
   init(): void {
@@ -166,13 +157,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
 
     this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
     this.barTitle = format(start, this.barTitleFormat, { locale: this.locale });
-  }
-
-  initYears(): void {
-    const range = this.maxYear - this.minYear;
-    this.years = Array.from(new Array(range), (x, i) => i + this.minYear).map(year => {
-      return { year: year, isThisYear: year === getYear(this.date) };
-    });
   }
 
   initDayNames(): void {
@@ -221,7 +205,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     const container = this.elementRef.nativeElement.querySelector('.ngx-datepicker-calendar-container');
-    if (container && container !== e.target && !container.contains(<any>e.target) && !(<any>e.target).classList.contains('year-unit')) {
+    if (container && container !== e.target && !container.contains(<any>e.target)) {
       this.close();
     }
   }
