@@ -10,6 +10,7 @@ import {
   getDate,
   getMonth,
   getYear,
+  isPast,
   isToday,
   isSameDay,
   isSameMonth,
@@ -57,6 +58,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     inThisMonth: boolean;
     isToday: boolean;
     isSelected: boolean;
+    isPast: boolean;
   }[];
   locale: any;
 
@@ -138,7 +140,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         year: getYear(date),
         inThisMonth: true,
         isToday: isToday(date),
-        isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue)
+        isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
+        isPast: isPast(date),
       };
     });
 
@@ -151,7 +154,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         year: getYear(date),
         inThisMonth: false,
         isToday: isToday(date),
-        isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue)
+        isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
+        isPast: isPast(date),
       });
     }
 
