@@ -50,7 +50,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   minYear: number;
   maxYear: number;
   firstCalendarDay: number;
-  view: string;
   years: { year: number; isThisYear: boolean }[];
   dayNames: string[];
   scrollOptions: ISlimScrollOptions;
@@ -90,7 +89,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   ngOnInit() {
-    this.view = 'days';
     this.date = new Date();
     this.setOptions();
     this.initDayNames();
@@ -135,7 +133,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.date = setYear(this.date, this.years[i].year);
     this.init();
     this.initYears();
-    this.view = 'days';
   }
 
   init(): void {
@@ -185,10 +182,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       const date = setDay(new Date(), i);
       this.dayNames.push(format(date, 'ddd'));
     }
-  }
-
-  toggleView(): void {
-    this.view = this.view === 'days' ? 'years' : 'days';
   }
 
   toggle(): void {
