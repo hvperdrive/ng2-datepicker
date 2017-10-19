@@ -22,8 +22,6 @@ import {
 import { ISlimScrollOptions } from 'ngx-slimscroll';
 
 export interface DatepickerOptions {
-  minYear?: number; // default: current year - 30
-  maxYear?: number; // default: current year + 30
   displayFormat?: string; // default: 'MMM D[,] YYYY'
   barTitleFormat?: string; // default: 'MMMM YYYY'
 }
@@ -104,8 +102,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   setOptions(): void {
-    this.minYear = this.options && this.options.minYear || getYear(this.date) - 30;
-    this.maxYear = this.options && this.options.maxYear || getYear(this.date) + 30;
+    this.minYear = getYear(this.date);
+    this.maxYear = getYear(this.date) + 5;
     this.displayFormat = this.options && this.options.displayFormat || 'MMM D[,] YYYY';
     this.barTitleFormat = this.options && this.options.barTitleFormat || 'MMMM YYYY';
     this.firstCalendarDay = 1; // 1 = Monday
