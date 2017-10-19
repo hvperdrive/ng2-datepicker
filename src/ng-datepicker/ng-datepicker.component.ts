@@ -15,6 +15,7 @@ import {
   isSameDay,
   isSameMonth,
   isSameYear,
+  isThisMonth,
   format,
   getDay,
   subDays,
@@ -45,6 +46,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   date: Date;
   barTitle: string;
   barTitleFormat: string;
+  isPrevMonthAvailable: boolean;
   minYear: number;
   maxYear: number;
   firstCalendarDay: number;
@@ -159,6 +161,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       });
     }
 
+    this.isPrevMonthAvailable = !isThisMonth(start);
     this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
     this.barTitle = format(start, this.barTitleFormat, { locale: this.locale });
   }
