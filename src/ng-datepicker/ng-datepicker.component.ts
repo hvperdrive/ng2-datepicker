@@ -26,7 +26,6 @@ export interface DatepickerOptions {
   maxYear?: number; // default: current year + 30
   displayFormat?: string; // default: 'MMM D[,] YYYY'
   barTitleFormat?: string; // default: 'MMMM YYYY'
-  firstCalendarDay?: number; // 0 = Sunday (default), 1 = Monday, ..
 }
 
 @Component({
@@ -109,7 +108,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.maxYear = this.options && this.options.maxYear || getYear(this.date) + 30;
     this.displayFormat = this.options && this.options.displayFormat || 'MMM D[,] YYYY';
     this.barTitleFormat = this.options && this.options.barTitleFormat || 'MMMM YYYY';
-    this.firstCalendarDay = this.options && this.options.firstCalendarDay || 0;
+    this.firstCalendarDay = 1; // 1 = Monday
   }
 
   nextMonth(): void {
