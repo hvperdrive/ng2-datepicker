@@ -121,9 +121,23 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   setDate(i: number): void {
-    this.date = this.days[i].date;
+    const day = this.days[i];
+    this.date = day.date;
     this.value = this.date;
-    this.init();
+
+    // loop over days and unselect currently selected
+    // + select newly selected day
+    this.days = this.days.map((day, index) => {
+      day.isSelected = false;
+      if (i === index) {
+        day.isSelected = true;
+      }
+      return day;
+    });
+
+    if (!day.inThisMonth) {
+      this.init();
+    }
   }
 
   init(): void {
