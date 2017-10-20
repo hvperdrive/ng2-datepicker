@@ -20,7 +20,7 @@
             'is-selected': day.isSelected,
             'is-disabled': day.isDisabled
           }"
-          (click)="!day.isPast && !day.isDisabled && setDate(i)">
+          (click)="!day.isPast && !day.isDisabled && setDay(i)">
             {{ day.day }}
           </span>
       </div>
@@ -32,7 +32,7 @@
             'is-disabled': hour.isDisabled,
             'is-selected': hour.isSelected
           }"
-          >
+          (click)="!hour.isDisabled && setHour(i)">
           {{ hour.hour }}
         </div>
       </div>

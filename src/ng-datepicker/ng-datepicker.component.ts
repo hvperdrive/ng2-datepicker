@@ -29,6 +29,24 @@ export interface DatepickerOptions {
   hourChar: string; // default: 'h'
 }
 
+interface Day {
+  date: Date;
+  day: number;
+  month: number;
+  year: number;
+  inThisMonth: boolean;
+  isSelected: boolean;
+  isPast: boolean;
+  isDisabled: boolean;
+}
+
+interface Hour {
+  value: number;
+  hour: string;
+  isDisabled: boolean;
+  isSelected: boolean;
+}
+
 @Component({
   selector: 'ng-datepicker',
   templateUrl: 'ng-datepicker.component.html',
@@ -45,28 +63,16 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   displayValue: string;
   displayFormat: string;
   date: Date;
+  day: Day;
+  hour: Hour;
   barTitle: string;
   barTitleFormat: string;
   isPrevMonthAvailable: boolean;
   firstCalendarDay: number;
   dayNames: string[];
   scrollOptions: ISlimScrollOptions;
-  days: {
-    date: Date;
-    day: number;
-    month: number;
-    year: number;
-    inThisMonth: boolean;
-    isSelected: boolean;
-    isPast: boolean;
-    isDisabled: boolean;
-  }[];
-  hours: {
-    value: number;
-    hour: string,
-    isDisabled: boolean;
-    isSelected: boolean;
-  }[];
+  days: Day[];
+  hours: Hour[];
   locale: any;
   hourChar: string;
   defaultHours: number[] = [9, 10, 11, 13, 14, 15, 16];
@@ -130,10 +136,13 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.init();
   }
 
-  setDate(i: number): void {
-    const day = this.days[i];
-    this.date = day.date;
+  setDate(day, hour): void {
+    this.date = this.day.date; // TODO ADD HOUR TO THIS VALUE
     this.value = this.date;
+  }
+
+  setDay(i: number): void {
+    this.day = this.days[i];
 
     // loop over days and unselect currently selected
     // + select newly selected day
@@ -145,9 +154,25 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       return day;
     });
 
-    if (!day.inThisMonth) {
+    if (!this.day.inThisMonth) {
       this.init();
     }
+
+    this.initHours();
+  }
+
+  setHour(i: number): void {
+    this.hour = this.hours[i];
+
+    this.hours = this.hours.map((hour, index) => {
+      hour.isSelected = false;
+      if (i === index) {
+        hour.isSelected = true;
+      }
+      return hour;
+    });
+
+    this.setDate(this.day, this.hour);
   }
 
   init(): void {
@@ -181,20 +206,24 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       });
     }
 
-    this.hours = this.defaultHours.map(hour => {
-      return {
-        value: hour,
-        hour: `${hour}${this.hourChar}`,
-        isDisabled: this.isDisabledHour(null, hour),
-        isSelected: false,
-      };
-    });
+    this.initHours();
 
     this.isPrevMonthAvailable = !isThisMonth(start);
     this.barTitle = format(start, this.barTitleFormat, { locale: this.locale });
     if (this.innerValue) {
       this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
     }
+  }
+
+  initHours(): void {
+    this.hours = this.defaultHours.map(hour => {
+      return {
+        value: hour,
+        hour: `${hour}${this.hourChar}`,
+        isDisabled: this.isDisabledHour(null, hour),
+        isSelected: this.hour && this.hour.value === hour,
+      };
+    });
   }
 
   initDayNames(): void {
@@ -215,6 +244,11 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   isDisabledHour(date: any, hour: any): boolean {
     // TODO: IMPLEMENT FUNCTION HERE THAT CHECKS IF TIMESLOT
     // IS AVAILABLE FOR GIVEN DATE
+    // NO DAY GIVEN (on load) --> disable all timeslots
+    if (!this.day) {
+      return true;
+    }
+
     return Math.random() > 0.50;
   }
 
