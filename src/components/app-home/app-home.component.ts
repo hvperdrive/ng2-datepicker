@@ -7,7 +7,5 @@ import { Component } from '@angular/core';
 export class AppHomeComponent {
   date: Date;
 
-  constructor() {
-    this.date = new Date();
-  }
+  constructor() {}
 }

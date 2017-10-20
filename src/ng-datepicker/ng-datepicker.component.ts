@@ -92,6 +92,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.date = new Date();
     this.setOptions();
     this.initDayNames();
+    this.init();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -124,7 +125,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.date = this.days[i].date;
     this.value = this.date;
     this.init();
-    this.close();
   }
 
   init(): void {
@@ -161,8 +161,10 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     this.isPrevMonthAvailable = !isThisMonth(start);
-    this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
     this.barTitle = format(start, this.barTitleFormat, { locale: this.locale });
+    if (this.innerValue) {
+      this.displayValue = format(this.innerValue, this.displayFormat, { locale: this.locale });
+    }
   }
 
   initDayNames(): void {
@@ -217,7 +219,11 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     }
 
     const container = this.elementRef.nativeElement.querySelector('.ngx-datepicker-calendar-container');
-    if (container && container !== e.target && !container.contains(<any>e.target)) {
+    if (
+      container &&
+      container !== e.target &&
+      !container.contains(<any>e.target) &&
+      !(<any>e.target).classList.contains('day-unit')) {
       this.close();
     }
   }
