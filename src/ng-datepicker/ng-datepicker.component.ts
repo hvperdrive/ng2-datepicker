@@ -56,7 +56,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     month: number;
     year: number;
     inThisMonth: boolean;
-    isToday: boolean;
     isSelected: boolean;
     isPast: boolean;
     isDisabled: boolean;
@@ -138,7 +137,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         month: getMonth(date),
         year: getYear(date),
         inThisMonth: true,
-        isToday: isToday(date),
         isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
         isPast: isPast(date) && !isToday(date),
         isDisabled: this.isDisabled(date)
@@ -153,7 +151,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         month: getMonth(date),
         year: getYear(date),
         inThisMonth: false,
-        isToday: isToday(date),
         isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
         isPast: isPast(date) && !isToday(date),
         isDisabled: this.isDisabled(date)
