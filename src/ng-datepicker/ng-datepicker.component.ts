@@ -26,6 +26,7 @@ import * as defaultLocale from 'date-fns/locale/en';
 
 export interface DatepickerOptions {
   locale?: any; // default: english 'date-fns/locale/en'
+  hourChar: string; // default: 'h'
 }
 
 @Component({
@@ -60,7 +61,15 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     isPast: boolean;
     isDisabled: boolean;
   }[];
+  hours: {
+    value: number;
+    hour: string,
+    isDisabled: boolean;
+    isSelected: boolean;
+  }[];
   locale: any;
+  hourChar: string;
+  defaultHours: number[] = [9, 10, 11, 13, 14, 15, 16];
 
   private onTouchedCallback: () => void = () => { };
   private onChangeCallback: (_: any) => void = () => { };
@@ -108,6 +117,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.firstCalendarDay = 1; // 1 = Monday
 
     this.locale = this.options && this.options.locale || defaultLocale;
+    this.hourChar = this.options && this.options.hourChar || 'h';
   }
 
   nextMonth(): void {
@@ -153,7 +163,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         inThisMonth: true,
         isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
         isPast: isPast(date) && !isToday(date),
-        isDisabled: this.isDisabled(date)
+        isDisabled: this.isDisabledDate(date)
       };
     });
 
@@ -167,9 +177,18 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         inThisMonth: false,
         isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
         isPast: isPast(date) && !isToday(date),
-        isDisabled: this.isDisabled(date)
+        isDisabled: this.isDisabledDate(date)
       });
     }
+
+    this.hours = this.defaultHours.map(hour => {
+      return {
+        value: hour,
+        hour: `${hour}${this.hourChar}`,
+        isDisabled: this.isDisabledHour(null, hour),
+        isSelected: false,
+      };
+    });
 
     this.isPrevMonthAvailable = !isThisMonth(start);
     this.barTitle = format(start, this.barTitleFormat, { locale: this.locale });
@@ -187,10 +206,16 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     }
   }
 
-  isDisabled(date: any): boolean {
+  isDisabledDate(date: any): boolean {
     // TODO: IMPLEMENT FUNCTION HERE THAT CHECKS TIMESLOTS FOR THAT DAY
     // AND DISABLES THE CURRENT DATE WHEN ALL TIMESLOTS ARE FILLED
     return Math.random() > 0.85;
+  }
+
+  isDisabledHour(date: any, hour: any): boolean {
+    // TODO: IMPLEMENT FUNCTION HERE THAT CHECKS IF TIMESLOT
+    // IS AVAILABLE FOR GIVEN DATE
+    return Math.random() > 0.50;
   }
 
   toggle(): void {

@@ -25,13 +25,16 @@
           </span>
       </div>
       <div class="main-calendar-hours">
-        <div class="hour-unit is-disabled">9u</div>
-        <div class="hour-unit is-selected">10u</div>
-        <div class="hour-unit">11u</div>
-        <div class="hour-unit">12u</div>
-        <div class="hour-unit">14u</div>
-        <div class="hour-unit">15u</div>
-        <div class="hour-unit">16u</div>
+        <div
+          class="hour-unit is-disabled"
+          *ngFor="let hour of hours; let i = index;"
+          [ngClass]="{
+            'is-disabled': hour.isDisabled,
+            'is-selected': hour.isSelected
+          }"
+          >
+          {{ hour.hour }}
+        </div>
       </div>
     </div>
   </div>
