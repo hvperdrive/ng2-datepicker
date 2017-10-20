@@ -47,8 +47,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   barTitle: string;
   barTitleFormat: string;
   isPrevMonthAvailable: boolean;
-  minYear: number;
-  maxYear: number;
   firstCalendarDay: number;
   dayNames: string[];
   scrollOptions: ISlimScrollOptions;
@@ -105,8 +103,6 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   setOptions(): void {
-    this.minYear = getYear(this.date);
-    this.maxYear = getYear(this.date) + 5;
     this.displayFormat = 'MMM D[,] YYYY';
     this.barTitleFormat = 'MMMM YYYY';
     this.firstCalendarDay = 1; // 1 = Monday
