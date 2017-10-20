@@ -5,6 +5,7 @@ import {
   endOfMonth,
   addMonths,
   subMonths,
+  addHours,
   setYear,
   eachDay,
   getDate,
@@ -137,7 +138,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   setDate(day, hour): void {
-    this.date = this.day.date; // TODO ADD HOUR TO THIS VALUE
+    this.date = addHours(this.day.date, this.hour.value);
     this.value = this.date;
   }
 
