@@ -61,6 +61,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     isToday: boolean;
     isSelected: boolean;
     isPast: boolean;
+    isDisabled: boolean;
   }[];
   locale: any;
 
@@ -143,7 +144,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         inThisMonth: true,
         isToday: isToday(date),
         isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
-        isPast: isPast(date),
+        isPast: isPast(date) && !isToday(date),
+        isDisabled: this.isDisabled(date)
       };
     });
 
@@ -157,7 +159,8 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
         inThisMonth: false,
         isToday: isToday(date),
         isSelected: isSameDay(date, this.innerValue) && isSameMonth(date, this.innerValue) && isSameYear(date, this.innerValue),
-        isPast: isPast(date),
+        isPast: isPast(date) && !isToday(date),
+        isDisabled: this.isDisabled(date)
       });
     }
 
@@ -173,6 +176,12 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
       const date = setDay(new Date(), i);
       this.dayNames.push(format(date, 'dd', { locale: this.locale }).toUpperCase().charAt(0));
     }
+  }
+
+  isDisabled(date: any): boolean {
+    // TODO: IMPLEMENT FUNCTION HERE THAT CHECKS TIMESLOTS FOR THAT DAY
+    // AND DISABLES THE CURRENT DATE WHEN ALL TIMESLOTS ARE FILLED
+    return Math.random() > 0.85;
   }
 
   toggle(): void {
