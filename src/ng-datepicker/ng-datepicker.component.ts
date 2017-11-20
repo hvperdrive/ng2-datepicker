@@ -137,7 +137,7 @@ export class NgDatepickerComponent implements ControlValueAccessor, OnInit, OnCh
     this.init();
   }
 
-  setDate(day, hour): void {
+  setDate(day: Day, hour: Hour): void {
     this.date = addHours(this.day.date, this.hour.value);
     this.value = this.date;
   }
